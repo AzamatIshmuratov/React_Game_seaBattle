@@ -6,30 +6,34 @@ function Square(props) {
         {props.value}
       </button>
     );
-  }
-  
+}
+
+let pluses; //global variable-massive with index (positions) of ships
+let rand; //number for positions of ships
+
+
 class Board extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
         squares: Array(15).fill(null),
-        countMove: 7,
-        //xIsNext: true,
+        countMove: 9,
       };
     }
   
     handleClick(i) {
       const squares = this.state.squares.slice();
-      if (!this.state.countMove || (squares[i]) || calculateWinner(this.state.squares)) {
+      if (!this.state.countMove || (squares[i]) || isWinner(this.state.squares)) {
         return;
       }
       
-      /*if (this.state.countMove) {
-         squares[i] = elem ? '+' : '-'; 
+      if (this.state.countMove) {
+         squares[i] = (pluses.find(elem => elem === i)) ? '+': '-';
       }
-      else squares[i] = null;*/
-      squares[i] = (this.state.countMove) ? '-' : null; 
-      
+      else squares[i] = null;
+       
+
+
       this.setState({
         squares: squares,
         countMove: this.state.countMove - 1,
@@ -46,14 +50,14 @@ class Board extends React.Component {
     }
   
     render() {
-      const isWin = calculateWinner(this.state.squares);
+      const isWin = isWinner(this.state.squares);
       let status;
       if (isWin) {
         status = 'Победа!!!';
       } else {
         status = (!this.state.countMove) ? 'Вы проиграли': 'Осталось ходов: ' + this.state.countMove;
       }
-  
+
       return (
         <div>
           <div className="status">{status}</div>
@@ -98,13 +102,21 @@ export default class Game extends Component {
   }
 }
 
-function calculateWinner(squares) {
+ /*function generateRandom(){
+   rand = Math.floor(Math.random() * Math.floor(10));
+ }*/
+
+function isWinner(squares) {
+
     const obj = [  ,   ,'+','+', 
                    ,   ,   ,   ,
-                   ,   ,   ,   ,
-                   ,   ,   ,   ];
+                '+','+','+',   ,
+                   ,   ,   ,   ];  //positions og ships
     let counter = 0;
    
+    pluses = obj.map((elem, index) => elem ? index: null);
+    console.log(pluses);
+
     for (let i = 0; i < obj.length; i++) {
         if (squares[i] && obj[i]){
           counter++;
