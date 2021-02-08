@@ -16,19 +16,19 @@ class Board extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        squares: Array(15).fill(null),
-        countMove: 9,
+        squares: Array(15).fill(null),  //4x4 
+        countMove: 9, //count of move down
       };
     }
   
     handleClick(i) {
       const squares = this.state.squares.slice();
-      if (!this.state.countMove || (squares[i]) || isWinner(this.state.squares)) {
+      if (!this.state.countMove || (squares[i]) || isWinner(this.state.squares)) {  //definition of win
         return;
       }
       
       if (this.state.countMove) {
-         squares[i] = (pluses.find(elem => elem === i)) ? '+': '-';
+         squares[i] = (pluses.find(elem => elem === i)) ? '+': '-';  //if find from global 'pluses' ships, then plus
       }
       else squares[i] = null;
        
@@ -57,6 +57,8 @@ class Board extends React.Component {
       } else {
         status = (!this.state.countMove) ? 'Вы проиграли': 'Осталось ходов: ' + this.state.countMove;
       }
+
+      
 
       return (
         <div>
@@ -107,6 +109,8 @@ export default class Game extends Component {
  }*/
 
 function isWinner(squares) {
+
+    
 
     const obj = [  ,   ,'+','+', 
                    ,   ,   ,   ,
