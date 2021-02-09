@@ -9,7 +9,7 @@ function Square(props) {
 }
 
 let pluses; //global variable-massive with index (positions) of ships
-let rand; //number for positions of ships
+let rand = []; //numbers for positions of ships
 
 
 class Board extends React.Component {
@@ -18,6 +18,7 @@ class Board extends React.Component {
       this.state = {
         squares: Array(15).fill(null),  //4x4 
         countMove: 9, //count of move down
+        countDestroy: 4, //4 is static count of ships
       };
     }
   
@@ -28,7 +29,8 @@ class Board extends React.Component {
       }
       
       if (this.state.countMove) {
-         squares[i] = (pluses.find(elem => elem === i)) ? '+': '-';  //if find from global 'pluses' ships, then plus
+         squares[i] = isNaN(pluses.find(elem => elem === i)) ? '-': '+';  //if find from global 'pluses' ships, then plus
+         console.log(pluses.find(elem => elem === i));
       }
       else squares[i] = null;
        
@@ -38,6 +40,12 @@ class Board extends React.Component {
         squares: squares,
         countMove: this.state.countMove - 1,
       });
+
+      if (squares[i] === '+') {
+        this.setState({
+          countDestroy: this.state.countDestroy - 1,
+        });
+      }
     }
   
     renderSquare(i) {
@@ -53,16 +61,15 @@ class Board extends React.Component {
       const isWin = isWinner(this.state.squares);
       let status;
       if (isWin) {
-        status = 'Победа!!!';
+        status = 'WIN!!!';
       } else {
-        status = (!this.state.countMove) ? 'Вы проиграли': 'Осталось ходов: ' + this.state.countMove;
-      }
-
-      
+        status = (!this.state.countMove) ? 'Game Over': 'Total moves: ' + this.state.countMove;
+      }      
 
       return (
         <div>
-          <div className="status">{status}</div>
+          <div className="status1">{status}</div>
+          <div className="status2">Left to destroy: {this.state.countDestroy}</div>
           <div className="board-row">
             {this.renderSquare(0)}
             {this.renderSquare(1)}
@@ -104,22 +111,35 @@ export default class Game extends Component {
   }
 }
 
- /*function generateRandom(){
-   rand = Math.floor(Math.random() * Math.floor(10));
- }*/
+ function generateRandom(){
+    let countRand = 4; //static value - count random numbers (count of ships)
+    let min = 0,
+        max = 3;
+    for (let i = 0; i < countRand; i++){
+       rand.push(Math.floor(Math.random() * (max - min)) + min);
+       min += 4;
+       max += 4;
+    }
+ }
 
 function isWinner(squares) {
 
-    
+    if (!rand.length) {
+       generateRandom();
+       console.log(rand);
+    }
 
-    const obj = [  ,   ,'+','+', 
+    const obj = new Array(16);
+    
+    rand.forEach(elem => obj[elem] = '+');
+    /*Location example of unit-ships 
+                [  ,   ,'+','+', 
                    ,   ,   ,   ,
-                '+','+','+',   ,
-                   ,   ,   ,   ];  //positions og ships
+                '+',   ,'+',   ,
+                   ,   ,   ,   ]; */
     let counter = 0;
    
     pluses = obj.map((elem, index) => elem ? index: null);
-    console.log(pluses);
 
     for (let i = 0; i < obj.length; i++) {
         if (squares[i] && obj[i]){

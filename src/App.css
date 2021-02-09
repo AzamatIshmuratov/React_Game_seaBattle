@@ -17,8 +17,11 @@ ol, ul {
   display: table;
 }
 
-.status {
+.status1 {
   margin-bottom: 10px;
+}
+.status2 {
+  margin-bottom: 15px;
 }
 
 .square {
@@ -28,12 +31,12 @@ ol, ul {
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 34px;
+  height: 50px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 50px;
 }
 
 .square:focus {
@@ -51,4 +54,8 @@ ol, ul {
 
 .game-info {
   margin-left: 20px;
+}
+
+#divRule{
+  margin-top: 10px;
 }
